@@ -1,5 +1,14 @@
 import /init.recovery.project.rc
 
+# Load touch-related modules
+on early-init
+    insmod /vendor/lib/modules/goodix_brl_mmi.ko
+    insmod /vendor/lib/modules/gt9886.ko
+    insmod /vendor/lib/modules/gt9896s.ko
+    insmod /vendor/lib/modules/mmi_info.ko
+    insmod /vendor/lib/modules/mmi_relay.ko
+    insmod /vendor/lib/modules/touchscreen_mmi.ko
+    
 on init
     setprop sys.usb.configfs 1
     setprop sys.usb.controller "musb-hdrc"
