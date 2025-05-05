@@ -1,0 +1,53 @@
+From 72feb84d2cd710486b0f8850814f3ef2dcac3b82 Mon Sep 17 00:00:00 2001
+From: GitFASTBOOT <ahmedshahinx0x@gmail.com>
+Date: Mon, 5 May 2025 13:18:58 +0800
+Subject: [PATCH] kernel_module_loader: Add Motorola touch module support
+
+Signed-off-by: GitFASTBOOT <ahmedshahinx0x@gmail.com>
+---
+ Android.mk               |  3 +++
+ kernel_module_loader.cpp | 15 +++++++++++++++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/Android.mk b/Android.mk
+index b30f0450e..4f786e838 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -401,6 +401,9 @@ endif
+ ifeq ($(TW_MOTOROLA_TOUCH_PERMISSION_FIX), true)
+ 	LOCAL_CFLAGS += -DTW_MOTOROLA_TOUCH_PERMISSION_FIX
+ endif
++ifeq ($(TW_MOTOROLA_TOUCH_RMMOD), true)
++	LOCAL_CFLAGS += -DTW_MOTOROLA_TOUCH_RMMOD
++endif
+ ifneq ($(TW_CUSTOM_CPU_TEMP_PATH),)
+ 	LOCAL_CFLAGS += -DTW_CUSTOM_CPU_TEMP_PATH=$(TW_CUSTOM_CPU_TEMP_PATH)
+ endif
+diff --git a/kernel_module_loader.cpp b/kernel_module_loader.cpp
+index e9ec46de1..999eda08e 100644
+--- a/kernel_module_loader.cpp
++++ b/kernel_module_loader.cpp
+@@ -61,6 +61,21 @@ bool KernelModuleLoader::Load_Vendor_Modules() {
+ 	vendor_module_dirs.push_back(vendor_base_dir + gki);
+ #endif
+ 
++#ifdef TW_MOTOROLA_TOUCH_RMMOD
++	{
++		std::string result;
++		// Force remove Motorola touch modules
++		TWFunc::Exec_Cmd("rmmod -f moto_touchscreen moto_sensors", result, false);
++		// Load fresh modules from vendor
++		TWFunc::Exec_Cmd("insmod /vendor/lib/modules/moto_touchscreen.ko", result, false);
++		TWFunc::Exec_Cmd("insmod /vendor/lib/modules/moto_sensors.ko", result, false);
++		// Fix permissions
++		TWFunc::Exec_Cmd("chmod 666 /sys/touchscreen/*", result, false);
++		TWFunc::Exec_Cmd("chmod 666 /sys/sensors/*", result, false);
++		TWFunc::Exec_Cmd("chown system:system /sys/touchscreen/*", result, false);
++	}
++#endif
++
+ 	TWFunc::RunFoxScript("/system/bin/beforemodules.sh", "");
+ 
+ 	Check_Loaded_Kernel_Modules();
+-- 
+2.49.0
