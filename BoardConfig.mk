@@ -159,6 +159,10 @@ TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_DEFAULT_BRIGHTNESS := 1400
 TW_MAX_BRIGHTNESS := 2048
 
+# Temp
+TW_CUSTOM_CPU_TEMP_PATH := sys/devices/virtual/thermal/thermal_zone32/temp
+
+
 # USB
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 
