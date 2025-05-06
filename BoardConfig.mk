@@ -171,4 +171,4 @@ TW_DEVICE_VERSION := GitFASTBOOT
 # Modules
 TW_LOAD_VENDOR_BOOT_MODULES := true
 TW_MOTOROLA_TOUCH_RMMOD := true
-TW_LOAD_VENDOR_MODULES := "goodix_brl_mmi.ko gt9896s.ko mmi_relay.ko touchscreen_mmi.ko gt9886.ko mmi_info.ko  sensors_class.ko"
+TW_LOAD_VENDOR_MODULES := "goodix_brl_mmi.ko gt9896s.ko mmi_relay.ko touchscreen_mmi.ko gt9886.ko mmi_info.ko sensors_class.ko aw883xx_k510_dlkm.ko aw9610x.ko aw86715.ko ax88179_178a.ko"
